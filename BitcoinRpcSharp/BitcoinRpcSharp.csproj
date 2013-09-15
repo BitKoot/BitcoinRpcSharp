@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{21023FF2-B19C-4CAD-9EC2-28F47FC9FC4C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BitcoinRpcSharp</RootNamespace>
+    <AssemblyName>BitcoinRpcSharp</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BitcoinRpcException.cs" />
+    <Compile Include="BitcoinWallet.cs" />
+    <Compile Include="BitcoinWalletBase.cs" />
+    <Compile Include="JsonRpcResponse.cs" />
+    <Compile Include="Requests\SignRawTransactionInput.cs" />
+    <Compile Include="Requests\SignRawTransaction.cs" />
+    <Compile Include="Requests\CreateRawTransaction.cs" />
+    <Compile Include="Requests\CreateRawTransactionInput.cs" />
+    <Compile Include="Responses\AddedNodeInfo.cs" />
+    <Compile Include="Responses\DecodedRawTransaction.cs" />
+    <Compile Include="Responses\MultisigAddress.cs" />
+    <Compile Include="Responses\NodeAddress.cs" />
+    <Compile Include="Responses\Block.cs" />
+    <Compile Include="Responses\ListReceivedByAddressTransaction.cs" />
+    <Compile Include="Responses\ListReceivedByAccountTransaction.cs" />
+    <Compile Include="Responses\ListTransaction.cs" />
+    <Compile Include="Responses\MiningInfo.cs" />
+    <Compile Include="Responses\Info.cs" />
+    <Compile Include="JsonFormatter.cs" />
+    <Compile Include="JsonRpcRequest.cs" />
+    <Compile Include="Responses\PeerInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Responses\SignedRawTransaction.cs" />
+    <Compile Include="Responses\Transaction.cs" />
+    <Compile Include="Responses\TransactionDetail.cs" />
+    <Compile Include="Responses\TransactionSinceBlock.cs" />
+    <Compile Include="Responses\TransactionsSinceBlock.cs" />
+    <Compile Include="Responses\TxOutSetInfo.cs" />
+    <Compile Include="Responses\UnspentTransaction.cs" />
+    <Compile Include="Responses\ValidateAddress.cs" />
+    <Compile Include="Utils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
