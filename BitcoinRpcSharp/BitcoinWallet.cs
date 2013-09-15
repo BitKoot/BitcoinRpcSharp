@@ -38,7 +38,7 @@ namespace BitcoinRpcSharp
         }
 
         /// <summary>
-        /// Version 0.8: Attempts add or remove <node> from the addnode list or try a connection to <node> once.
+        /// Creates a multi-signature address.
         /// </summary>
         /// <param name="nRquired">Number of required signatures to sign a transaction.</param>
         /// <param name="publicKeys">Public keys associated with the multi signature address.</param>
