@@ -76,7 +76,7 @@ namespace BitcoinRpcSharp
             // Important, otherwise the service can't deserialse your request properly
             webRequest.ContentType = "application/json-rpc";
             webRequest.Method = "POST";
-            webRequest.Timeout = 2000; // 2 seconds
+            webRequest.Timeout = 10000; // 2 seconds
 
             byte[] byteArray = jsonRpcRequest.GetBytes();
             webRequest.ContentLength = byteArray.Length;
