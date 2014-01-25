@@ -8,7 +8,7 @@ namespace BitcoinRpcSharp.Responses
 {
     public class TransactionsSinceBlock
     {
-        public List<TransactionSinceBlock> transactions { get; set; }
+        public List<TransactionSinceBlock> Transactions { get; set; }
         public string Lastblock { get; set; }
     }
 }
