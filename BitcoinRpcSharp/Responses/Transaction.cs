@@ -17,5 +17,7 @@ namespace BitcoinRpcSharp.Responses
         public string Comment { get; set; }
         public string To { get; set; }
         public List<TransactionDetail> Details { get; set; }
+        public string BlockHash { get; set; }
+        public int BlockIndex { get; set; }
     }
 }
