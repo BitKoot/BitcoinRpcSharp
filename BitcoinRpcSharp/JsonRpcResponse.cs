@@ -28,7 +28,7 @@ namespace BitcoinRpcSharp
         /// The error returned by the wallet, if any.
         /// </summary>
         [JsonProperty(PropertyName = "error", Order = 2)]
-        public string Error { get; set; }
+        public RpcError Error { get; set; }
 
         /// <summary>
         /// Create a new JSON RPC response with the given id, error and result object.
@@ -36,11 +36,19 @@ namespace BitcoinRpcSharp
         /// <param name="id">The id.</param>
         /// <param name="error">The error.</param>
         /// <param name="result">The result object.</param>
-        public JsonRpcResponse(int id, string error, T result)
-        {
-            Id = id;
-            Error = error;
-            Result = result;
-        }
+        //public JsonRpcResponse(int id, string error, T result)
+        //{
+        //    Id = id;
+        //    Error = error;
+        //    Result = result;
+        //}
+    }
+
+    public class RpcError
+    {
+        [JsonProperty(PropertyName = "code")]
+        public int Code { get; set; }
+        [JsonProperty(PropertyName = "message")]
+        public string Message { get; set; }
     }
 }

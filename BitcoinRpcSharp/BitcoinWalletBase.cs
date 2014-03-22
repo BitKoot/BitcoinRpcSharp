@@ -76,7 +76,7 @@ namespace BitcoinRpcSharp
             // Important, otherwise the service can't deserialse your request properly
             webRequest.ContentType = "application/json-rpc";
             webRequest.Method = "POST";
-            webRequest.Timeout = 100*1000; // 2 seconds
+            webRequest.Timeout = 100 * 1000; // 2 seconds
 
             byte[] byteArray = jsonRpcRequest.GetBytes();
             webRequest.ContentLength = byteArray.Length;
@@ -167,7 +167,16 @@ namespace BitcoinRpcSharp
                                     {
                                         Console.WriteLine(JsonFormatter.PrettyPrint(result));
                                     }
-                                    throw new BitcoinRpcException(result,webEx);
+                                    try
+                                    {
+                                        var obj = JsonConvert.DeserializeObject<JsonRpcResponse<object>>(result);
+                                        throw new BitcoinRpcServerErrorException(result, webEx) { JsonObject = obj };
+                                    }
+                                    catch (JsonException)
+                                    {
+                                        throw new BitcoinRpcException("The RPC request was either not understood by the Bitcoin server or there was a problem executing the request.", webEx);
+                                    }
+                                    //throw new BitcoinRpcException(result,webEx);
                                 }
                             }
                             throw new BitcoinRpcException("The RPC request was either not understood by the Bitcoin server or there was a problem executing the request.", webEx);
