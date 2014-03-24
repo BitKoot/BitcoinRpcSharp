@@ -41,5 +41,13 @@ namespace BitcoinRpcSharp
           System.Runtime.Serialization.StreamingContext context)
             : base(info, context) { }
         public JsonRpcResponse<object> JsonObject { get; set; }
+
+        public RPCErrorCode RpcErrorCode
+        {
+            get
+            {
+                return JsonObject.Error.Code;
+            }
+        }
     }
 }
