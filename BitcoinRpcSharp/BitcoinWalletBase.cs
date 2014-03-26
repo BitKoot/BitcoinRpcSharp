@@ -174,7 +174,7 @@ namespace BitcoinRpcSharp
                                     }
                                     catch (JsonException)
                                     {
-                                        throw new BitcoinRpcException("The RPC request was either not understood by the Bitcoin server or there was a problem executing the request.", webEx);
+                                        throw new BitcoinRpcException(result, webEx);
                                     }
                                     //throw new BitcoinRpcException(result,webEx);
                                 }
