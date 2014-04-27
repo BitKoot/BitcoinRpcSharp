@@ -30,6 +30,8 @@ namespace BitcoinRpcSharp
         [JsonProperty(PropertyName = "error", Order = 2)]
         public RpcError Error { get; set; }
 
+        [JsonProperty(PropertyName = "jsonrpc", Order = 2)]
+        public string JsonRpc { get; set; }
         /// <summary>
         /// Create a new JSON RPC response with the given id, error and result object.
         /// </summary>

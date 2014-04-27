@@ -464,6 +464,26 @@ namespace BitcoinRpcSharp
             return MakeRequest<List<ListTransaction>>("listtransactions", account, count, from);
         }
 
+        public List<ListTransaction> BlockChainListTransactions(string account = "", int count = 10, int from = 0)
+        {
+            var list= MakeRequest<TransactionsSinceBlock>("listtransactions", account, count, from);
+            return list.transactions.Select(p => new ListTransaction()
+            {
+                Account = p.Account,
+                Address = p.Address,
+                Amount = p.Amount,
+                BlockHash = p.BlockHash,
+                BlockIndex = p.BlockIndex,
+                BlockTime = p.BlockTime,
+                Category = p.Category,
+                Confirmations = p.Confirmations,
+                Generated = p.Generated,
+                Time = p.Time,
+                TimeReceived = p.TimeReceived,
+                TxId = p.TxId
+            }).ToList();
+        }
+
         /// <summary>
         /// Version 0.7: Returns array of unspent transaction inputs in the wallet.
         /// </summary>

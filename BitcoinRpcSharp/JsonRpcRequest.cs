@@ -16,6 +16,9 @@ namespace BitcoinRpcSharp
         [JsonProperty(PropertyName = "method", Order = 0)]
         public string Method { get; set; }
 
+        [JsonProperty(PropertyName = "jsonrpc", Order = 3)]
+        public string JsonRpc { get; set; }
+
         /// <summary>
         /// A list of parameters to pass to the method.
         /// </summary>
@@ -39,6 +42,7 @@ namespace BitcoinRpcSharp
             Id = id;
             Method = method;
 
+            JsonRpc = "2.0";
             if (parameters != null)
             {
                 Parameters = parameters.ToList<object>();

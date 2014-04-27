@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Text;
 
 namespace BitcoinRpcSharp
 {
@@ -63,6 +64,12 @@ namespace BitcoinRpcSharp
             return GetRpcResponse<T>(httpWebRequest);
         }
 
+        static void SetBasicAuthHeader(WebRequest request, String userName, String userPassword)
+        {
+            string authInfo = userName + ":" + userPassword;
+            authInfo = Convert.ToBase64String(Encoding.UTF8.GetBytes(authInfo));
+            request.Headers["Authorization"] = "Basic " + authInfo;
+        }
         /// <summary>
         /// Make the actual HTTP request to the Bitcoin RPC interface.
         /// </summary>
@@ -71,8 +78,8 @@ namespace BitcoinRpcSharp
         private HttpWebRequest MakeHttpRequest(JsonRpcRequest jsonRpcRequest)
         {
             var webRequest = (HttpWebRequest)WebRequest.Create(RpcUrl);
-            webRequest.Credentials = new NetworkCredential(RpcUser, RpcPassword);
-
+            //webRequest.Credentials = new NetworkCredential(RpcUser, RpcPassword);
+            SetBasicAuthHeader(webRequest, RpcUser, RpcPassword);
             // Important, otherwise the service can't deserialse your request properly
             webRequest.ContentType = "application/json-rpc";
             webRequest.Method = "POST";
@@ -107,9 +114,12 @@ namespace BitcoinRpcSharp
         {
             string json = GetJsonResponse(httpWebRequest);
 
+            var jsonSerializerSettings = new JsonSerializerSettings();
+            jsonSerializerSettings.MissingMemberHandling = MissingMemberHandling.Ignore;
+            
             try
             {
-                return JsonConvert.DeserializeObject<JsonRpcResponse<T>>(json);
+                return JsonConvert.DeserializeObject<JsonRpcResponse<T>>(json, jsonSerializerSettings);
             }
             catch (JsonException jsonEx)
             {
