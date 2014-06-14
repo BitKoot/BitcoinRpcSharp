@@ -16,7 +16,7 @@ namespace BitcoinRpcSharp.Responses
         public string MerkleRoot { get; set; }
         public List<string> Tx { get; set; }
         public int Time { get; set; }
-        public int Nonce { get; set; }
+        public uint Nonce { get; set; }
         public string Bits { get; set; }
         public double Difficulty { get; set; }
         public string NextBlockHash { get; set; }

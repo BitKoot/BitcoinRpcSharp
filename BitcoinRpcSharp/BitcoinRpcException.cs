@@ -28,4 +28,26 @@ namespace BitcoinRpcSharp
         { 
         }
     }
+
+
+    [Serializable]
+    public class BitcoinRpcServerErrorException : BitcoinRpcException
+    {
+        public BitcoinRpcServerErrorException() { }
+        public BitcoinRpcServerErrorException(string message) : base(message) { }
+        public BitcoinRpcServerErrorException(string message, Exception inner) : base(message, inner) { }
+        protected BitcoinRpcServerErrorException(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context)
+            : base(info, context) { }
+        public JsonRpcResponse<object> JsonObject { get; set; }
+
+        public RPCErrorCode RpcErrorCode
+        {
+            get
+            {
+                return JsonObject.Error.Code;
+            }
+        }
+    }
 }

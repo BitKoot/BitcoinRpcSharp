@@ -16,5 +16,10 @@ namespace BitcoinRpcSharp.Responses
         public string TxId { get; set; }
         public int Time { get; set; }
         public int TimeReceived { get; set; }
+        public string BlockHash { get; set; }
+        public int BlockIndex { get; set; }
+        public int BlockTime { get; set; }
+
+        public bool Generated { get; set; }
     }
 }

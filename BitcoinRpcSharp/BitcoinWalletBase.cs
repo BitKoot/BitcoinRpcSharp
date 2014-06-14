@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Text;
 
 namespace BitcoinRpcSharp
 {
@@ -63,6 +64,12 @@ namespace BitcoinRpcSharp
             return GetRpcResponse<T>(httpWebRequest);
         }
 
+        static void SetBasicAuthHeader(WebRequest request, String userName, String userPassword)
+        {
+            string authInfo = userName + ":" + userPassword;
+            authInfo = Convert.ToBase64String(Encoding.UTF8.GetBytes(authInfo));
+            request.Headers["Authorization"] = "Basic " + authInfo;
+        }
         /// <summary>
         /// Make the actual HTTP request to the Bitcoin RPC interface.
         /// </summary>
@@ -71,12 +78,12 @@ namespace BitcoinRpcSharp
         private HttpWebRequest MakeHttpRequest(JsonRpcRequest jsonRpcRequest)
         {
             var webRequest = (HttpWebRequest)WebRequest.Create(RpcUrl);
-            webRequest.Credentials = new NetworkCredential(RpcUser, RpcPassword);
-
+            //webRequest.Credentials = new NetworkCredential(RpcUser, RpcPassword);
+            SetBasicAuthHeader(webRequest, RpcUser, RpcPassword);
             // Important, otherwise the service can't deserialse your request properly
             webRequest.ContentType = "application/json-rpc";
             webRequest.Method = "POST";
-            webRequest.Timeout = 2000; // 2 seconds
+            webRequest.Timeout = 100 * 1000; // 2 seconds
 
             byte[] byteArray = jsonRpcRequest.GetBytes();
             webRequest.ContentLength = byteArray.Length;
@@ -107,9 +114,12 @@ namespace BitcoinRpcSharp
         {
             string json = GetJsonResponse(httpWebRequest);
 
+            var jsonSerializerSettings = new JsonSerializerSettings();
+            jsonSerializerSettings.MissingMemberHandling = MissingMemberHandling.Ignore;
+            
             try
             {
-                return JsonConvert.DeserializeObject<JsonRpcResponse<T>>(json);
+                return JsonConvert.DeserializeObject<JsonRpcResponse<T>>(json, jsonSerializerSettings);
             }
             catch (JsonException jsonEx)
             {
@@ -154,7 +164,31 @@ namespace BitcoinRpcSharp
                 {
                     switch (webResponse.StatusCode)
                     {
+
                         case HttpStatusCode.InternalServerError:
+                            {
+                                using (var stream = webResponse.GetResponseStream())
+                                using (var reader = new StreamReader(stream))
+                                {
+                                    string result = reader.ReadToEnd();
+                                    reader.Close();
+
+                                    if (LogJsonResultToConsole)
+                                    {
+                                        Console.WriteLine(JsonFormatter.PrettyPrint(result));
+                                    }
+                                    try
+                                    {
+                                        var obj = JsonConvert.DeserializeObject<JsonRpcResponse<object>>(result);
+                                        throw new BitcoinRpcServerErrorException(result, webEx) { JsonObject = obj };
+                                    }
+                                    catch (JsonException)
+                                    {
+                                        throw new BitcoinRpcException(result, webEx);
+                                    }
+                                    //throw new BitcoinRpcException(result,webEx);
+                                }
+                            }
                             throw new BitcoinRpcException("The RPC request was either not understood by the Bitcoin server or there was a problem executing the request.", webEx);
                     }
                 }
